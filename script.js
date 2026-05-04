@@ -160,20 +160,16 @@ hands.setOptions({
 });
 
 hands.onResults((results) => {
-    // 1. Xóa toàn bộ dữ liệu của khung hình trước
     controllerCtx.clearRect(0, 0, W_CONTROLLER, H_CONTROLLER);
     
-    // 2. Đổ nền đen bảo vệ quyền riêng tư (Thay thế cho lệnh drawImage)
-    controllerCtx.fillStyle = "black";
-    controllerCtx.fillRect(0, 0, W_CONTROLLER, H_CONTROLLER);
+    // HIỆU CHỈNH: Loại bỏ ctx.scale(-1, 1). Chỉ sử dụng thuộc tính transform lật CSS.
+    controllerCtx.drawImage(results.image, 0, 0, W_CONTROLLER, H_CONTROLLER);
 
     let f_count = 0;
     currentShape = "HOME";
 
     if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
         const landmarks = results.multiHandLandmarks[0];
-        
-        // 3. Vẽ khung xương và các điểm khớp lên nền đen
         window.drawConnectors(controllerCtx, landmarks, window.HAND_CONNECTIONS, {color: '#00FF00', lineWidth: 2});
         window.drawLandmarks(controllerCtx, landmarks, {color: '#FF0000', lineWidth: 1});
 
